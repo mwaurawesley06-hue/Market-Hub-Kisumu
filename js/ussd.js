@@ -75,16 +75,19 @@
     function confirmAndCreate() {
         api.createSubscription({
             phone_number: session.phone,
-            commodity: session.commodity,
+            commodity: session.commodityId || session.commodity,
+            commodity_name: session.commodity,
             frequency: session.frequency
         }).then(function (result) {
+            var codeLine = result.sandbox_otp
+                ? 'Verification code: ' + result.sandbox_otp + '\n'
+                : (result.detail ? result.detail + '\n' : '');
             print(
                 'Subscription created\n\n' +
                 'ID: ' + result.subscription_id + '\n' +
                 'Commodity: ' + session.commodity + '\n' +
                 'Frequency: ' + session.frequency + '\n\n' +
-                'Demo verification code: ' + result.verification_code + '\n' +
-                '(no real SMS was sent)\n\n' +
+                codeLine + '\n' +
                 'Confirm the code on the SMS alerts page.\n0. Main menu'
             );
             setStatus('Subscription created', 'done');
@@ -139,6 +142,7 @@
                 return;
             }
             session.commodity = commodities[index].name;
+            session.commodityId = commodities[index].id;
             session.step = 'frequency';
             askFrequency();
             return;

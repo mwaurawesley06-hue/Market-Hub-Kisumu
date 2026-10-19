@@ -18,13 +18,16 @@
     var submitButton = document.getElementById('subscribe-submit');
 
     var pending = null;
+    var commodityNames = {};
 
     function fillCommodities() {
         if (!commoditySelect) return;
         api.getCommodities().then(function (items) {
+            commodityNames = {};
             commoditySelect.innerHTML = '<option value="">Select a commodity</option>' +
                 items.map(function (item) {
-                    return '<option value="' + ui.escapeHtml(item.name) + '">' + ui.escapeHtml(item.name) + '</option>';
+                    commodityNames[String(item.id)] = item.name;
+                    return '<option value="' + item.id + '">' + ui.escapeHtml(item.name) + '</option>';
                 }).join('');
         }).catch(function () {
             commoditySelect.innerHTML = '<option value="">Commodities unavailable</option>';
@@ -48,16 +51,28 @@
             if (!valid) return;
 
             if (submitButton) submitButton.disabled = true;
-            api.createSubscription({ phone_number: phone, commodity: commodity, frequency: frequency })
+            var commodityName = commodityNames[commodity] || commodity;
+            api.createSubscription({ phone_number: phone, commodity: commodity, commodity_name: commodityName, frequency: frequency })
                 .then(function (result) {
                     pending = result;
+                    pending.commodity = commodityName;
                     if (verificationPhone) verificationPhone.value = result.phone_number;
                     if (verificationId) verificationId.value = result.subscription_id;
-                    if (verificationMessage) verificationMessage.textContent = result.message;
+                    if (verificationMessage) {
+                        verificationMessage.textContent = result.detail ||
+                            'We created your subscription. Enter the 6-digit code sent by SMS.';
+                    }
                     if (verificationPanel) verificationPanel.hidden = false;
-                    if (localTokenNote) { localTokenNote.hidden = false; localTokenNote.textContent = ''; }
+                    if (localTokenNote) {
+                        localTokenNote.hidden = !result.sandbox_otp;
+                        if (result.sandbox_otp) {
+                            localTokenNote.textContent = 'SMS gateway is in sandbox mode — your code is ' + result.sandbox_otp + '.';
+                        }
+                    }
                     form.reset();
-                    ui.toast('Subscription created. Enter the demo verification code.', 'success');
+                    ui.toast(result.verification_required === false
+                        ? 'You are already verified for these alerts.'
+                        : 'Subscription created. Enter the verification code.', 'success');
                     if (verificationPanel) verificationPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 })
                 .catch(function (error) {
@@ -81,13 +96,15 @@
                 return;
             }
             verifyButton.disabled = true;
-            api.verifySubscription(pending.subscription_id, code)
+            api.verifySubscription(pending.subscription_id, code, pending.phone_number)
                 .then(function (result) {
-                    ui.toast('Phone verified. SMS alerts are active for ' + pending.commodity + '.', 'success');
+                    ui.toast(result.detail ||
+                        ('Phone verified. SMS alerts are active for ' + (pending.commodity || '') + '.'), 'success');
                     if (localTokenNote) {
-                        localTokenNote.hidden = false;
-                        localTokenNote.textContent = 'Verification complete. Unsubscribe token: ' + result.token +
-                            ' (demo only — stored in this browser).';
+                        localTokenNote.hidden = !result.token;
+                        localTokenNote.textContent = result.token
+                            ? 'Verification complete. Unsubscribe token: ' + result.token
+                            : '';
                     }
                     if (verificationCode) verificationCode.value = '';
                 })

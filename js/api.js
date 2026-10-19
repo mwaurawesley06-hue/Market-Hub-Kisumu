@@ -1,14 +1,40 @@
 /* MPIDS data layer.
- * This build is hosted on static hosting (GitHub Pages), so the PHP/MySQL
- * API is not available. The layer serves the published dataset exported from
- * the live database (data/prices.json) and keeps demo subscriptions in
- * localStorage. Row shape matches api/handlers/public-dashboard.php. */
+ *
+ * Live mode: when window.MPIDS_CONFIG.apiBase points at the PHP API (for
+ * example the Render service), reads and SMS registrations go to the real
+ * database. Row shapes match api/handlers/public-dashboard.php.
+ *
+ * Demo mode: with no apiBase configured (or when the API is unreachable for
+ * reads), prices come from data/prices.json and subscriptions live in
+ * localStorage so the GitHub Pages build works standalone. */
 (function () {
     'use strict';
 
     var DATA_URL = 'data/prices.json';
     var SUBS_KEY = 'mpids_subscriptions';
     var datasetPromise = null;
+
+    var apiBase = String((window.MPIDS_CONFIG && window.MPIDS_CONFIG.apiBase) || '')
+        .trim()
+        .replace(/\/+$/, '');
+
+    function liveEnabled() {
+        return apiBase !== '';
+    }
+
+    function live(path, options) {
+        return fetch(apiBase + path, options).then(function (response) {
+            return response.json().catch(function () { return {}; }).then(function (body) {
+                if (!response.ok) {
+                    var error = new Error(body.detail || ('Request failed (' + response.status + ')'));
+                    error.status = response.status;
+                    error.body = body;
+                    throw error;
+                }
+                return body;
+            });
+        });
+    }
 
     function loadDataset() {
         if (datasetPromise) return datasetPromise;
@@ -45,22 +71,59 @@
         return true;
     }
 
+    function staticPrices(filters) {
+        return loadDataset().then(function (data) {
+            var rows = (data.rows || []).filter(function (row) {
+                return matchesFilters(row, filters);
+            });
+            return { rows: rows, updated_at: data.updated_at, live: false };
+        });
+    }
+
+    function livePrices(filters) {
+        var params = new URLSearchParams();
+        if (filters) {
+            if (filters.commodity) params.set('commodity', filters.commodity);
+            if (filters.market) params.set('market', filters.market);
+            if (filters.date_from) params.set('date_from', filters.date_from);
+            if (filters.date_to) params.set('date_to', filters.date_to);
+        }
+        var query = params.toString();
+        return live('/public/dashboard/' + (query ? '?' + query : '')).then(function (data) {
+            data.live = true;
+            return data;
+        });
+    }
+
     window.MPIDSApi = {
+        liveEnabled: liveEnabled,
+
         getPublicPrices: function (filters) {
-            return loadDataset().then(function (data) {
-                var rows = (data.rows || []).filter(function (row) {
-                    return matchesFilters(row, filters);
-                });
-                return { rows: rows, updated_at: data.updated_at };
+            if (!liveEnabled()) return staticPrices(filters);
+            return livePrices(filters).catch(function (error) {
+                console.warn('MPIDS API unreachable — falling back to the static dataset.', error);
+                return staticPrices(filters);
             });
         },
 
         getCommodities: function () {
-            return loadDataset().then(function (data) { return (data.commodities || []).slice(); });
+            if (!liveEnabled()) {
+                return loadDataset().then(function (data) { return (data.commodities || []).slice(); });
+            }
+            return live('/public/commodities').catch(function (error) {
+                console.warn('MPIDS API unreachable — using static commodities.', error);
+                return loadDataset().then(function (data) { return (data.commodities || []).slice(); });
+            });
         },
 
         getMarkets: function () {
-            return loadDataset().then(function (data) { return (data.markets || []).slice(); });
+            if (!liveEnabled()) {
+                return loadDataset().then(function (data) { return (data.markets || []).slice(); });
+            }
+            return live('/public/markets').catch(function (error) {
+                console.warn('MPIDS API unreachable — using static markets.', error);
+                return loadDataset().then(function (data) { return (data.markets || []).slice(); });
+            });
         },
 
         createSubscription: function (payload) {
@@ -71,13 +134,33 @@
             var commodity = String((payload && payload.commodity) || '').trim();
             if (!commodity) return Promise.reject(new Error('Choose a commodity to follow.'));
             var frequency = payload && payload.frequency === 'weekly' ? 'weekly' : 'daily';
+            var commodityName = (payload && payload.commodity_name) || commodity;
+
+            if (liveEnabled()) {
+                return live('/subscriptions/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone_number: phone, commodity: commodity, frequency: frequency })
+                }).then(function (result) {
+                    return {
+                        subscription_id: result.subscription_id,
+                        phone_number: phone,
+                        detail: result.detail,
+                        verification_required: result.verification_required !== false,
+                        sandbox_otp: result.sandbox_otp || null,
+                        live: true
+                    };
+                });
+            }
+
+            // Demo mode: simulate the OTP flow in this browser.
             var code = String(Math.floor(100000 + Math.random() * 900000));
             var id = 'SUB-' + Date.now().toString(36).toUpperCase();
             var list = readSubscriptions();
             list.push({
                 subscription_id: id,
                 phone_number: phone,
-                commodity: commodity,
+                commodity: commodityName,
                 frequency: frequency,
                 verification_code: code,
                 verified: false,
@@ -88,16 +171,37 @@
             return Promise.resolve({
                 subscription_id: id,
                 phone_number: phone,
-                verification_code: code,
-                message: 'Demo build: your verification code is ' + code + ' (no real SMS was sent).'
+                detail: 'Demo build: your verification code is ' + code + ' (no real SMS was sent).',
+                verification_required: true,
+                sandbox_otp: code,
+                live: false
             });
         },
 
-        verifySubscription: function (subscriptionId, code) {
+        verifySubscription: function (subscriptionId, code, phoneNumber) {
+            if (liveEnabled()) {
+                return live('/subscriptions/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone_number: phoneNumber || '',
+                        code: code,
+                        subscription_id: subscriptionId
+                    })
+                }).then(function (result) {
+                    return {
+                        ok: true,
+                        detail: result.detail,
+                        token: result.sandbox_unsubscribe_token || null,
+                        live: true
+                    };
+                });
+            }
+
             var list = readSubscriptions();
             var entry = null;
             for (var i = 0; i < list.length; i++) {
-                if (list[i].subscription_id === subscriptionId) { entry = list[i]; break; }
+                if (String(list[i].subscription_id) === String(subscriptionId)) { entry = list[i]; break; }
             }
             if (!entry) return Promise.reject(new Error('Subscription not found on this device.'));
             if (String(entry.verification_code) !== String(code).trim()) {
@@ -105,10 +209,20 @@
             }
             entry.verified = true;
             writeSubscriptions(list);
-            return Promise.resolve({ ok: true, token: entry.token });
+            return Promise.resolve({ ok: true, token: entry.token, detail: 'Verified (demo).', live: false });
         },
 
         unsubscribe: function (phone, token) {
+            var normalized = window.MPIDSUI.kenyanPhone(phone) || phone;
+
+            if (liveEnabled()) {
+                return live('/subscriptions/', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone_number: normalized, token: token })
+                }).then(function () { return { ok: true, live: true }; });
+            }
+
             var target = window.MPIDSUI.kenyanPhone(phone);
             var list = readSubscriptions();
             var kept = list.filter(function (entry) {
@@ -120,7 +234,7 @@
                 return Promise.reject(new Error('No subscription matches that phone number and token.'));
             }
             writeSubscriptions(kept);
-            return Promise.resolve({ ok: true });
+            return Promise.resolve({ ok: true, live: false });
         }
     };
 })();
