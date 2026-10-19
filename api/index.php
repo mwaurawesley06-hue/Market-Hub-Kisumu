@@ -88,6 +88,7 @@ if ($resource === 'health') {
         'database' => $dbOk,
         'db_host' => DB_HOST,
         'db_error' => $dbError,
+        'pdo_drivers' => PDO::getAvailableDrivers(),
         'time' => date('c'),
     ], 200);
 }
