@@ -1,7 +1,8 @@
 /* MPIDS data layer.
- * This build is hosted on static hosting (GitHub Pages), so live PHP/MySQL
- * endpoints are not available. The layer reads the published dataset from
- * data/prices.json and keeps demo subscriptions in localStorage. */
+ * This build is hosted on static hosting (GitHub Pages), so the PHP/MySQL
+ * API is not available. The layer serves the published dataset exported from
+ * the live database (data/prices.json) and keeps demo subscriptions in
+ * localStorage. Row shape matches api/handlers/public-dashboard.php. */
 (function () {
     'use strict';
 
@@ -35,37 +36,22 @@
         localStorage.setItem(SUBS_KEY, JSON.stringify(list));
     }
 
-    function normalizePhone(value) {
-        var digits = String(value || '').replace(/\D/g, '');
-        if (/^0[17]\d{8}$/.test(digits)) digits = '254' + digits.slice(1);
-        if (/^7\d{8}$/.test(digits) || /^1\d{8}$/.test(digits)) digits = '254' + digits;
-        return digits;
-    }
-
-    function isPhone(value) {
-        return /^254[17]\d{8}$/.test(normalizePhone(value));
-    }
-
     function matchesFilters(row, filters) {
         if (!filters) return true;
-        if (filters.commodity && row.commodity !== filters.commodity) return false;
-        if (filters.market && row.market !== filters.market) return false;
-        if (filters.from && row.observed_at < filters.from) return false;
-        if (filters.to && row.observed_at > filters.to) return false;
+        if (filters.commodity && row.commodity_id !== Number(filters.commodity)) return false;
+        if (filters.market && row.market_id !== Number(filters.market)) return false;
+        if (filters.date_from && row.date_observed < filters.date_from) return false;
+        if (filters.date_to && row.date_observed > filters.date_to) return false;
         return true;
     }
 
     window.MPIDSApi = {
         getPublicPrices: function (filters) {
             return loadDataset().then(function (data) {
-                var rows = (data.prices || []).slice().filter(function (row) {
+                var rows = (data.rows || []).filter(function (row) {
                     return matchesFilters(row, filters);
                 });
-                rows.sort(function (a, b) {
-                    if (a.observed_at === b.observed_at) return a.commodity.localeCompare(b.commodity);
-                    return a.observed_at < b.observed_at ? 1 : -1;
-                });
-                return { rows: rows, updated_at: data.updated_at, source: data.source };
+                return { rows: rows, updated_at: data.updated_at };
             });
         },
 
@@ -78,8 +64,8 @@
         },
 
         createSubscription: function (payload) {
-            var phone = normalizePhone(payload && payload.phone_number);
-            if (!isPhone(phone)) {
+            var phone = window.MPIDSUI.kenyanPhone(payload && payload.phone_number);
+            if (!phone) {
                 return Promise.reject(new Error('Enter a valid Kenyan phone number, e.g. +254712345678.'));
             }
             var commodity = String((payload && payload.commodity) || '').trim();
@@ -90,7 +76,7 @@
             var list = readSubscriptions();
             list.push({
                 subscription_id: id,
-                phone_number: '+' + phone,
+                phone_number: phone,
                 commodity: commodity,
                 frequency: frequency,
                 verification_code: code,
@@ -101,7 +87,7 @@
             writeSubscriptions(list);
             return Promise.resolve({
                 subscription_id: id,
-                phone_number: '+' + phone,
+                phone_number: phone,
                 verification_code: code,
                 message: 'Demo build: your verification code is ' + code + ' (no real SMS was sent).'
             });
@@ -123,10 +109,10 @@
         },
 
         unsubscribe: function (phone, token) {
-            var target = normalizePhone(phone);
+            var target = window.MPIDSUI.kenyanPhone(phone);
             var list = readSubscriptions();
             var kept = list.filter(function (entry) {
-                var samePhone = normalizePhone(entry.phone_number) === target;
+                var samePhone = entry.phone_number === target;
                 var sameToken = String(entry.token).toLowerCase() === String(token || '').trim().toLowerCase();
                 return !(samePhone && sameToken);
             });
