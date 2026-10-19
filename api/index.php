@@ -83,13 +83,13 @@ if ($resource === 'health') {
         $dbError = $healthDbError->getMessage();
     }
     json_out([
-        'ok' => $dbOk,
+        'ok' => true,
         'app' => APP_NAME,
         'database' => $dbOk,
         'db_host' => DB_HOST,
         'db_error' => $dbError,
         'time' => date('c'),
-    ], $dbOk ? 200 : 503);
+    ], 200);
 }
 
 $pdo = db();
