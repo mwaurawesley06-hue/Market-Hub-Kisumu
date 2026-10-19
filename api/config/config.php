@@ -23,7 +23,7 @@ define('SESSION_NAME', env('SESSION_NAME', 'MPIDSSESSID'));
 define('SESSION_MAX_LIFETIME', max(300, (int) env('MPIDS_SESSION_MAX_LIFETIME', '28800')));
 define('CORS_ORIGIN', env('CORS_ORIGIN', '*'));
 
-// DATABASE_URL support (Render, Railway, Clever Cloud, …). Platforms that
+// DATABASE_URL support (Render, Railway, Clever Cloud, etc). Platforms that
 // provision a managed database hand out a single URL instead of discrete
 // DB_* variables. Parse it first, then let MPIDS_DB_* / DB_* override so a
 // self-hosted .env keeps working unchanged.
@@ -49,11 +49,11 @@ define('DB_PORT', mpids_setting('MPIDS_DB_PORT', 'DB_PORT', '3306'));
 define('DB_DATABASE', mpids_setting('MPIDS_DB_NAME', 'DB_DATABASE', 'mpids'));
 define('DB_USERNAME', mpids_setting('MPIDS_DB_USER', 'DB_USER', 'root'));
 define('DB_PASSWORD', mpids_setting('MPIDS_DB_PASS', 'DB_PASSWORD', ''));
-// Managed MySQL (Render, PlanetScale, …) requires TLS. MPIDS_DB_SSL=1 turns it
-// on explicitly; it is also implied automatically for *.render.com hosts.
+// Managed MySQL (Render, PlanetScale, TiDB, etc) requires TLS. MPIDS_DB_SSL=1 turns it
+// on explicitly; it is also implied automatically for *.render.com and *.tidbcloud.com hosts.
 // MPIDS_DB_SSL_CA may point at a CA bundle (Render's ca.pem) when the platform
 // pins its own certificate authority.
-define('DB_SSL', strtolower(mpids_setting('MPIDS_DB_SSL', 'DB_SSL', '')) === '1' || str_ends_with(DB_HOST, 'render.com'));
+define('DB_SSL', strtolower(mpids_setting('MPIDS_DB_SSL', 'DB_SSL', '')) === '1' || str_ends_with(DB_HOST, 'render.com') || str_ends_with(DB_HOST, 'tidbcloud.com'));
 define('DB_SSL_CA', mpids_setting('MPIDS_DB_SSL_CA', 'DB_SSL_CA', ''));
 define('DB_SSL_VERIFY', strtolower(mpids_setting('DB_SSL_VERIFY', 'DB_SSL_VERIFY', '1')) !== '0');
 

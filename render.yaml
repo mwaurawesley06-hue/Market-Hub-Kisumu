@@ -1,7 +1,8 @@
-# Render blueprint: PHP web service + instructions for the managed MySQL add-on.
-# Create the database first (Dashboard → New → MySQL), copy its External
-# Database URL into the env below (or set MPIDS_DB_* individually), then
-# deploy this service from the `backend` branch of the repository.
+# Render blueprint: PHP web service connected to an EXTERNAL MySQL database.
+# Render only offers managed Postgres/Redis, so host MySQL elsewhere for free
+# (recommended: TiDB Cloud Starter, MySQL-compatible — see RENDER_SETUP.md).
+# Copy your database's connection URL into DATABASE_URL below, then deploy
+# this service from the `backend` branch of the repository.
 services:
   - type: web
     name: mpids-api
@@ -15,6 +16,8 @@ services:
         sync: false
       - key: MPIDS_DB_SSL
         value: "1"
+      - key: MPIDS_DB_SSL_VERIFY
+        sync: false
       - key: CORS_ORIGIN
         value: "https://mwaurawesley06-hue.github.io"
       - key: MPIDS_APP_NAME
