@@ -12,12 +12,8 @@ services:
     startCommand: "php -S 0.0.0.0:$PORT router.php"
     healthCheckPath: /api/health/
     envVars:
-      - key: DATABASE_URL
-        sync: false
       - key: MPIDS_DB_SSL
         value: "1"
-      - key: MPIDS_DB_SSL_VERIFY
-        sync: false
       - key: CORS_ORIGIN
         value: "https://mwaurawesley06-hue.github.io"
       - key: MPIDS_APP_NAME
