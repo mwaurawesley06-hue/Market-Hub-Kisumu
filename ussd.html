@@ -1,10 +1,9 @@
-<?php require __DIR__ . "/public-prelude.php"; ?>
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>USSD simulator · MPIDS</title>
+    <title>USSD simulator Â· MPIDS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -16,11 +15,11 @@
     <link rel="manifest" href="pwa/manifest.json">
 </head>
 <body class="public-shell">
-<header class="public-header"><div class="public-header-inner"><a class="public-brand" href="public-dashboard"><span class="brand-mark"><img src="img/logo.svg" alt="MPIDS logo" data-brand-logo></span><span><strong data-brand-name>MPIDS</strong><span data-brand-tagline>Market Info Hub, Kisumu</span></span></a><nav class="public-header-actions"><a class="button button-secondary button-small" href="public-dashboard"><i class="fa-solid fa-arrow-left"></i><span>Prices</span></a><a class="button button-primary button-small" href="login"><i class="fa-solid fa-lock"></i><span>Admin sign in</span></a></nav></div></header>
+<header class="public-header"><div class="public-header-inner"><a class="public-brand" href="public-dashboard.html"><span class="brand-mark"><img src="img/logo.svg" alt="MPIDS logo" data-brand-logo></span><span><strong data-brand-name>MPIDS</strong><span data-brand-tagline>Market Info Hub, Kisumu</span></span></a><nav class="public-header-actions"><a class="button button-secondary button-small" href="public-dashboard.html"><i class="fa-solid fa-arrow-left"></i><span>Prices</span></a><a class="button button-primary button-small" href="login.html"><i class="fa-solid fa-lock"></i><span>Admin sign in</span></a></nav></div></header>
 <main class="public-main">
 <section class="page-heading market-accent market-accent-banner"><div><div class="eyebrow">Feature phones first</div><h1>USSD simulator</h1><p>Dial the hub's service code and any market participant can check a price or subscribe to SMS alerts without internet or a smartphone.</p></div></section>
 <section class="panel ussd-simulator">
-    <div class="panel-header"><div><h2>Try the USSD session</h2><p>Runs against the live PHP USSD handler on this server, and writes real rows to <code>sms_subscriptions</code>.</p></div><span class="badge badge-soft-info"><i class="fa-solid fa-phone"></i>Live simulation</span></div>
+    <div class="panel-header"><div><h2>Try the USSD session</h2><p>Interactive copy of the hub's USSD menu. On this static demo the session runs entirely in your browser.</p></div><span class="badge badge-soft-info"><i class="fa-solid fa-phone"></i>Live simulation</span></div>
     <div class="panel-body">
         <form id="ussd-form" novalidate>
             <div class="form-grid">
@@ -43,7 +42,7 @@
             </div>
         </form>
         <div class="phone-screen">
-            <div class="phone-screen-top"><span>MPIDS · Service code</span><span id="ussd-status" data-tone="open">Ready</span></div>
+            <div class="phone-screen-top"><span>MPIDS Â· Service code</span><span id="ussd-status" data-tone="open">Ready</span></div>
             <pre id="ussd-output">Dial the code to begin. The main menu appears here.</pre>
         </div>
     </div>
@@ -52,13 +51,13 @@
         <ol class="steps-list">
             <li class="step"><div><strong>Send empty</strong><p>Opens the main menu: <code>1</code> price check, <code>2</code> SMS subscription.</p></div></li>
             <li class="step"><div><strong>Option 2</strong><p>Asks for a phone number, then a commodity, then daily or weekly, then confirms.</p></div></li>
-            <li class="step"><div><strong>Confirm</strong><p>Inserts the subscription and texts a 6-digit verification code. Confirm it on the <a href="subscriptions">SMS alerts page</a> to switch alerts on.</p></div></li>
+            <li class="step"><div><strong>Confirm</strong><p>Inserts the subscription and texts a 6-digit verification code. Confirm it on the <a href="subscriptions.html">SMS alerts page</a> to switch alerts on.</p></div></li>
         </ol>
-        <p class="form-hint">No real SMS is sent while the gateway is unconfigured — messages are simulated and logged to <code>tmp/logs/sms-sim.log</code>.</p>
+        <p class="form-hint">No real SMS is sent while the gateway is unconfigured â€” messages are simulated and logged to <code>tmp/logs/sms-sim.log</code>.</p>
     </div>
 </section>
 </main>
-<footer class="public-footer"><div class="public-footer-inner"><strong><span data-brand-name>MPIDS</span> · <span data-brand-tagline>Market Info Hub, Kisumu</span></strong><span>Prices shown are the latest approved records.</span></div></footer><div class="toast-region" id="toast-region" aria-live="polite"></div>
+<footer class="public-footer"><div class="public-footer-inner"><strong><span data-brand-name>MPIDS</span> Â· <span data-brand-tagline>Market Info Hub, Kisumu</span></strong><span>Prices shown are the latest approved records.</span></div></footer><div class="toast-region" id="toast-region" aria-live="polite"></div>
 <script src="js/api.js"></script><script src="js/public-ui.js"></script><script src="js/public-branding.js"></script><script src="js/ussd.js"></script>
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+  "name": "MPIDS Market Info Hub, Kisumu",
+  "short_name": "MPIDS",
+  "description": "Current commodity market prices from the MPIDS Market Info Hub in Kisumu.",
+  "start_url": "../public-dashboard.html",
+  "scope": "../",
+  "display": "standalone",
+  "background_color": "#f4f7f5",
+  "theme_color": "#0b6e4f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "../img/favicon.png", "sizes": "64x64", "type": "image/png" }
+  ]
+}
