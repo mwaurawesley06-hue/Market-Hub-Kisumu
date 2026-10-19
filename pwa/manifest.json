@@ -1,0 +1,25 @@
+{
+  "name": "MPIDS",
+  "short_name": "MPIDS",
+  "description": "Market price information hub for Kisumu, Kenya. Browse published commodity prices, subscribe to SMS alerts, and check prices over USSD.",
+  "start_url": "/public-dashboard.html",
+  "scope": "/public-dashboard.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0b6e4f",
+  "background_color": "#0b2b1b",
+  "icons": [
+    {
+      "src": "img/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

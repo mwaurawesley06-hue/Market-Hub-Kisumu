@@ -1,0 +1,14 @@
+{
+    "name": "mpids/market-price-information-distribution-system",
+    "description": "MPIDS — Market Price Information Distribution System (Kisumu). Plain PHP API + static admin shell; no runtime Composer dependencies.",
+    "type": "project",
+    "require": {
+        "php": ">=8.1"
+    },
+    "config": {
+        "platform": {
+            "php": "8.2"
+        },
+        "sort-packages": true
+    }
+}

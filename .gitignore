@@ -1,0 +1,7 @@
+﻿.env
+tmp/
+.freebuff/
+*.log
+.DS_Store
+Thumbs.db
+composer.lock

@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Front controller: extensionless API paths (/api/auth/login/, /api/price-records/3/approve/ ...)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L,QSA]
+
+# Handlers are library files, never entry points — only api/index.php is reachable.
+<FilesMatch "^(?!index\.php$).+\.php$">
+    Require all denied
+</FilesMatch>

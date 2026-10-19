@@ -1,0 +1,19 @@
+RewriteEngine On
+
+# The sign-in page is a standalone static file, not part of the authenticated
+# admin shell. Serve it directly and exempt it from the app.php front
+# controller so the auth gate never redirects /login back to /login.
+RewriteRule ^login/?$ login.html [L]
+
+# Front controller: extensionless admin/public pages route through app.php.
+# Skips the root (/) so DirectoryIndex can serve index.html for the home page.
+# Skips real files (CSS, JS, images, the static public .html pages) and real
+# directories so they are served directly by Apache.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)$ app.php?view=$1 [L,QSA]
+
+# App root should never serve loose PHP files directly.
+<FilesMatch "^(?!index\.php$|app\.php$).+\.php$">
+    Require all denied
+</FilesMatch>

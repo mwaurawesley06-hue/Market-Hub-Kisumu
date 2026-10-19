@@ -1,0 +1,25 @@
+# Render blueprint: PHP web service + instructions for the managed MySQL add-on.
+# Create the database first (Dashboard → New → MySQL), copy its External
+# Database URL into the env below (or set MPIDS_DB_* individually), then
+# deploy this service from the `backend` branch of the repository.
+services:
+  - type: web
+    name: mpids-api
+    runtime: php
+    plan: free
+    buildCommand: "composer install --no-dev --no-interaction"
+    startCommand: "php -S 0.0.0.0:$PORT router.php"
+    healthCheckPath: /api/health/
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: MPIDS_DB_SSL
+        value: "1"
+      - key: CORS_ORIGIN
+        value: "https://mwaurawesley06-hue.github.io"
+      - key: MPIDS_APP_NAME
+        value: "MPIDS"
+      - key: APP_TIMEZONE
+        value: "Africa/Nairobi"
+      - key: PHP_VERSION
+        value: "8.2"

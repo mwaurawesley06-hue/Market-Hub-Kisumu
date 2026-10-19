@@ -1,0 +1,9 @@
+<section class="page-heading">
+    <div><div class="eyebrow">Accountability</div><h1>Audit trail</h1><p>Append-only history of every create, update, approval, rejection, deletion, and channel action.</p></div>
+    <div class="heading-actions"><button class="button button-secondary" type="button" id="refresh-audit"><i class="fa-solid fa-rotate"></i><span>Refresh log</span></button></div>
+</section>
+<section class="panel">
+    <div class="filters"><div class="filter-control"><label for="audit-action">Action</label><input id="audit-action" type="search" placeholder="e.g. price_approved"></div><div class="filter-control"><label for="audit-entity">Entity</label><input id="audit-entity" type="search" placeholder="e.g. price_record"></div><div class="filter-actions"><button class="button button-secondary" type="button" id="apply-audit-filters"><i class="fa-solid fa-filter"></i><span>Filter</span></button></div></div>
+    <div class="table-wrap"><table class="data-table"><caption class="visually-hidden">Audit trail entries recorded for every state-changing action</caption><thead><tr><th scope="col">When</th><th scope="col">User</th><th scope="col">Action</th><th scope="col">Entity</th><th scope="col">Changes</th><th scope="col">IP address</th></tr></thead><tbody id="audit-table"><tr><td colspan="6" class="table-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Loading audit trail</span></td></tr></tbody></table></div>
+    <div class="table-pagination"><span id="audit-count">Loading log…</span><div class="table-pagination-actions"><button class="button button-small button-secondary" type="button" id="audit-previous" disabled><i class="fa-solid fa-chevron-left"></i><span>Previous</span></button><button class="button button-small button-secondary" type="button" id="audit-next" disabled><span>Next</span><i class="fa-solid fa-chevron-right"></i></button></div></div>
+</section>

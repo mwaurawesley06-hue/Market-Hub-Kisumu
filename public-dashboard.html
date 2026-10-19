@@ -1,0 +1,39 @@
+<?php require __DIR__ . "/public-prelude.php"; ?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b6e4f">
+    <meta name="description" content="Current commodity market prices from the MPIDS Market Info Hub in Kisumu.">
+    <title>Public prices · MPIDS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/layout.css?v=9">
+    <link rel="stylesheet" href="css/style.css?v=9">
+    <link rel="stylesheet" href="css/responsive.css?v=9">
+    <link rel="icon" href="img/favicon.png">
+    <link rel="manifest" href="pwa/manifest.json">
+</head>
+<body class="public-shell">
+<header class="public-header"><div class="public-header-inner"><a class="public-brand" href="public-dashboard"><span class="brand-mark"><img src="img/logo.svg" alt="MPIDS logo" data-brand-logo></span><span><strong data-brand-name>MPIDS</strong><span data-brand-tagline>Market Info Hub, Kisumu</span></span></a><nav class="public-header-actions"><a class="button button-secondary button-small" href="subscriptions"><i class="fa-solid fa-bell"></i><span>SMS alerts</span></a><a class="button button-primary button-small" href="login"><i class="fa-solid fa-lock"></i><span>Admin sign in</span></a></nav></div></header>
+<main class="public-main">
+    <section class="public-hero"><div><div class="eyebrow">One authoritative market source</div>    <h1>Know the price. <em>Make the next move.</em></h1><p>Browse the latest published commodity prices from trusted markets across Kisumu. MPIDS keeps traders, farmers, and buyers working from the same information.</p><div class="hero-actions"><a class="button button-primary" href="#latest-prices"><i class="fa-solid fa-arrow-down"></i><span>View latest prices</span></a><a class="button button-secondary" href="subscriptions"><i class="fa-solid fa-bell"></i><span>Get SMS alerts</span></a></div></div><div class="hero-visual"><img class="hero-photo" src="img/market-hero.jpg" alt="Traders confirming a payment at a busy Kisumu market" data-brand-hero loading="eager"><div class="hero-photo-overlay" aria-hidden="true"></div><div class="hero-visual-inner"><span class="visual-label">Latest market signal</span><strong id="hero-price">—</strong><span id="hero-market">Loading published prices…</span></div></div></section>
+    <section id="latest-prices"><div class="public-section-heading"><div><h2>Latest published prices</h2><p>Only approved records are shown here. Last updated <span id="updated-at">—</span>.</p></div></div><div class="public-filters"><div class="filter-control"><label for="public-commodity">Commodity</label><select id="public-commodity"><option value="">All commodities</option></select></div><div class="filter-control"><label for="public-market">Market</label><select id="public-market"><option value="">All markets</option></select></div><div class="filter-control"><label for="public-from">From</label><input id="public-from" type="date"></div><div class="filter-control"><label for="public-to">To</label><input id="public-to" type="date"></div><div class="filter-actions"><button class="button button-primary" type="button" id="public-filter"><i class="fa-solid fa-filter"></i><span>Filter</span></button></div></div><div class="public-price-grid" id="public-price-grid"><div class="public-table-panel loading-overlay"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Loading published prices</span></div></div></section>
+    <section class="public-table-panel"><div class="panel-header"><div><h2>Price directory</h2><p>Published observations available to every channel.</p></div></div><div class="table-wrap"><table class="data-table"><caption class="visually-hidden">Published price observations available to every channel</caption><thead><tr><th scope="col">Commodity</th><th scope="col">Market</th><th scope="col">Observed</th><th scope="col">Price</th><th scope="col">Trend</th><th scope="col">Category</th></tr></thead><tbody id="public-table"><tr><td colspan="6" class="table-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Loading prices</span></td></tr></tbody></table></div></section>
+    <section class="market-accent market-accent-banner public-cta">
+        <div><h2>Work from one price, not three.</h2><p>Subscribe with your phone and receive every published update by SMS — no smartphone or account needed.</p></div>
+        <figure class="public-cta-visual"><img src="img/photos/fisherman-catch.jpg" alt="A fisherman carrying freshly caught tilapia from a boat on Lake Victoria" loading="lazy" width="638" height="480"></figure>
+        <a class="button button-primary" href="subscriptions"><i class="fa-solid fa-bell"></i><span>Get SMS alerts</span></a>
+    </section>
+</main>
+<footer class="public-footer"><div class="public-footer-inner"><strong><span data-brand-name>MPIDS</span> · <span data-brand-tagline>Market Info Hub, Kisumu</span></strong><span>Published prices are for information and may change throughout the trading day.</span></div></footer>
+<div class="toast-region" id="toast-region" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/public-ui.js"></script>
+<script src="js/public-branding.js"></script>
+<script src="js/public-dashboard.js"></script>
+</body>
+</html>
