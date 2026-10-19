@@ -8,6 +8,6 @@ COPY . .
 ENV PHP_CLI_SERVER_WORKERS=4 \
     APP_TIMEZONE=Africa/Nairobi
 
-EXPOSE 8080
+EXPOSE 10000
 
 CMD ["sh", "-c", "echo \"[mpids] starting php -S 0.0.0.0:${PORT:-10000}\"; exec php -S 0.0.0.0:${PORT:-10000} router.php"]
