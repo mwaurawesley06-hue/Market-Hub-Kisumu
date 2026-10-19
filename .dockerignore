@@ -1,0 +1,8 @@
+.git
+.env
+tmp
+api/tmp
+.freebuff
+*.log
+node_modules
+database/mpids-tidb-import.sql
