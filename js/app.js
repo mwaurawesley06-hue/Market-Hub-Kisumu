@@ -1,4 +1,4 @@
-/* Admin shell for the static build.
+﻿/* Admin shell for the static build.
  * The PHP app rendered this chrome server-side; here we rebuild it in the
  * browser so admin pages keep their layout. Live data needs the PHP backend. */
 (function () {
@@ -54,14 +54,14 @@
 
     document.body.classList.add('admin-shell');
     document.body.setAttribute('data-page', page);
-    document.title = pageTitle + ' · MPIDS';
+    document.title = pageTitle + ' Â· MPIDS';
 
     document.body.innerHTML =
         '<a class="skip-link" href="#main-content">Skip to content</a>' +
         '<div class="app-frame">' +
             '<aside class="sidebar" id="sidebar">' +
                 '<div class="brand-lockup">' +
-                    '<div class="brand-mark"><img src="img/logo.svg" alt="MPIDS logo"></div>' +
+                    '<div class="brand-mark"><img src="img/logo.png" alt="MPIDS logo"></div>' +
                     '<div><strong>MPIDS</strong><span>Market Info Hub</span></div>' +
                 '</div>' +
                 '<div class="sidebar-location"><i class="fa-solid fa-location-dot"></i><span>Kisumu, Kenya</span></div>' +

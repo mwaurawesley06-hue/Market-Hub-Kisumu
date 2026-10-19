@@ -21,11 +21,18 @@
     function setGrid(html) { if (grid) grid.innerHTML = html; }
     function setTable(html) { if (tableBody) tableBody.innerHTML = html; }
 
+    function photoMarkup(row) {
+        if (!row.photo) {
+            return '<div class="public-price-photo-fallback"><i class="fa-solid ' + ui.commodityIcon(row.icon) + '"></i></div>';
+        }
+        return '<img src="' + ui.escapeHtml(row.photo) + '" alt="' + ui.escapeHtml(row.commodity) + ' at ' + ui.escapeHtml(row.market) + '" loading="lazy">';
+    }
+
     function renderCard(row) {
         var trend = ui.trendMeta(row.trend);
         return '<article class="public-price-card">' +
             '<div class="public-price-photo">' +
-                '<div class="public-price-photo-fallback"><i class="fa-solid ' + ui.commodityIcon(row.icon) + '"></i></div>' +
+                photoMarkup(row) +
                 '<span class="badge ' + trend.badge + ' trend"><i class="fa-solid ' + trend.icon + '"></i> ' + trend.label + '</span>' +
             '</div>' +
             '<div class="public-price-card-body">' +
@@ -40,8 +47,11 @@
 
     function renderRow(row) {
         var trend = ui.trendMeta(row.trend);
+        var thumb = row.photo
+            ? '<img src="' + ui.escapeHtml(row.photo) + '" alt="" loading="lazy">'
+            : '<i class="fa-solid ' + ui.commodityIcon(row.icon) + '"></i>';
         return '<tr>' +
-            '<td><div class="cell-commodity"><span class="cell-thumb"><i class="fa-solid ' + ui.commodityIcon(row.icon) + '"></i></span>' +
+            '<td><div class="cell-commodity"><span class="cell-thumb">' + thumb + '</span>' +
                 '<div><span class="table-primary">' + ui.escapeHtml(row.commodity) + '</span>' +
                 '<span class="table-secondary">' + ui.escapeHtml(row.category) + '</span></div></div></td>' +
             '<td>' + ui.escapeHtml(row.market) + '</td>' +

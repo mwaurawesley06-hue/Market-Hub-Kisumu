@@ -1,4 +1,4 @@
-/* Default branding + service worker registration for public pages.
+﻿/* Default branding + service worker registration for public pages.
  * The PHP build injected admin-configured branding; on static hosting we
  * fall back to the MPIDS defaults shipped with the site. */
 (function () {
@@ -7,7 +7,7 @@
     var defaults = {
         name: 'MPIDS',
         tagline: 'Market Info Hub, Kisumu',
-        logo: 'img/logo.svg'
+        logo: 'img/logo.png'
     };
 
     function applyBranding(brand) {

@@ -1,4 +1,4 @@
-/* MPIDS service worker — offline support for the PUBLIC site only.
+﻿/* MPIDS service worker â€” offline support for the PUBLIC site only.
  * Must live at the site root so its scope covers every page.
  * Admin pages, the login screen and authenticated API traffic are never cached. */
 const CACHE_NAME = 'mpids-v9';
@@ -21,10 +21,11 @@ const OFFLINE_FALLBACK = [
     'js/subscriptions.js',
     'js/ussd.js',
     'pwa/manifest.json',
-    'pwa/icon.svg',
+    'pwa/icon-192.png',
+    'pwa/icon-512.png',
     'img/favicon.png',
     'img/market-hero.jpg',
-    'img/logo.svg'
+    'img/logo.png'
 ];
 const CACHEABLE_PAGES = ['public-dashboard.html', 'subscriptions.html', 'ussd.html'];
 // Derived from the worker's own location so the app can live in any subdirectory.

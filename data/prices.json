@@ -1,37 +1,234 @@
 ﻿{
-  "updated_at": "2026-10-19T09:30:00+03:00",
-  "source": "MPIDS demo dataset (static hosting build)",
-  "commodities": [
-    { "id": 1, "name": "Tilapia", "category": "Fish", "icon": "fa-fish" },
-    { "id": 2, "name": "Nile perch", "category": "Fish", "icon": "fa-fish" },
-    { "id": 3, "name": "Tomatoes", "category": "Vegetables", "icon": "fa-pepper-hot" },
-    { "id": 4, "name": "Onions", "category": "Vegetables", "icon": "fa-carrot" },
-    { "id": 5, "name": "Sukuma wiki", "category": "Vegetables", "icon": "fa-leaf" },
-    { "id": 6, "name": "Maize", "category": "Cereals", "icon": "fa-wheat-awn" },
-    { "id": 7, "name": "Beans", "category": "Pulses", "icon": "fa-seedling" },
-    { "id": 8, "name": "Rice", "category": "Cereals", "icon": "fa-bowl-rice" },
-    { "id": 9, "name": "Cooking oil", "category": "Essentials", "icon": "fa-bottle-droplet" },
-    { "id": 10, "name": "Avocados", "category": "Fruits", "icon": "fa-apple-whole" }
-  ],
-  "markets": [
-    { "id": 1, "name": "Kibuye Market" },
-    { "id": 2, "name": "Kondele Market" },
-    { "id": 3, "name": "Nyahera Market" },
-    { "id": 4, "name": "Obunga Market" },
-    { "id": 5, "name": "Manyatta Market" }
-  ],
-  "prices": [
-    { "commodity": "Tilapia", "category": "Fish", "icon": "fa-fish", "market": "Kibuye Market", "observed_at": "2026-10-19", "price": 420, "currency": "KES", "unit": "kg", "trend": "up" },
-    { "commodity": "Nile perch", "category": "Fish", "icon": "fa-fish", "market": "Kibuye Market", "observed_at": "2026-10-19", "price": 380, "currency": "KES", "unit": "kg", "trend": "stable" },
-    { "commodity": "Tomatoes", "category": "Vegetables", "icon": "fa-pepper-hot", "market": "Kibuye Market", "observed_at": "2026-10-19", "price": 85, "currency": "KES", "unit": "kg", "trend": "down" },
-    { "commodity": "Onions", "category": "Vegetables", "icon": "fa-carrot", "market": "Kondele Market", "observed_at": "2026-10-19", "price": 110, "currency": "KES", "unit": "kg", "trend": "up" },
-    { "commodity": "Sukuma wiki", "category": "Vegetables", "icon": "fa-leaf", "market": "Obunga Market", "observed_at": "2026-10-19", "price": 30, "currency": "KES", "unit": "bunch", "trend": "stable" },
-    { "commodity": "Maize", "category": "Cereals", "icon": "fa-wheat-awn", "market": "Nyahera Market", "observed_at": "2026-10-18", "price": 52, "currency": "KES", "unit": "kg", "trend": "down" },
-    { "commodity": "Beans", "category": "Pulses", "icon": "fa-seedling", "market": "Manyatta Market", "observed_at": "2026-10-18", "price": 160, "currency": "KES", "unit": "kg", "trend": "up" },
-    { "commodity": "Rice", "category": "Cereals", "icon": "fa-bowl-rice", "market": "Kondele Market", "observed_at": "2026-10-18", "price": 195, "currency": "KES", "unit": "kg", "trend": "stable" },
-    { "commodity": "Cooking oil", "category": "Essentials", "icon": "fa-bottle-droplet", "market": "Kibuye Market", "observed_at": "2026-10-18", "price": 320, "currency": "KES", "unit": "litre", "trend": "up" },
-    { "commodity": "Avocados", "category": "Fruits", "icon": "fa-apple-whole", "market": "Obunga Market", "observed_at": "2026-10-17", "price": 45, "currency": "KES", "unit": "piece", "trend": "down" },
-    { "commodity": "Tilapia", "category": "Fish", "icon": "fa-fish", "market": "Manyatta Market", "observed_at": "2026-10-17", "price": 400, "currency": "KES", "unit": "kg", "trend": "stable" },
-    { "commodity": "Tomatoes", "category": "Vegetables", "icon": "fa-pepper-hot", "market": "Nyahera Market", "observed_at": "2026-10-17", "price": 90, "currency": "KES", "unit": "kg", "trend": "up" }
-  ]
+    "updated_at":  "2026-10-19T09:30:00+03:00",
+    "source":  "MPIDS demo dataset (static hosting build)",
+    "commodities":  [
+                        {
+                            "id":  1,
+                            "name":  "Tilapia",
+                            "category":  "Fish",
+                            "icon":  "fa-fish"
+                        },
+                        {
+                            "id":  2,
+                            "name":  "Nile perch",
+                            "category":  "Fish",
+                            "icon":  "fa-fish"
+                        },
+                        {
+                            "id":  3,
+                            "name":  "Tomatoes",
+                            "category":  "Vegetables",
+                            "icon":  "fa-pepper-hot"
+                        },
+                        {
+                            "id":  4,
+                            "name":  "Onions",
+                            "category":  "Vegetables",
+                            "icon":  "fa-carrot"
+                        },
+                        {
+                            "id":  5,
+                            "name":  "Sukuma wiki",
+                            "category":  "Vegetables",
+                            "icon":  "fa-leaf"
+                        },
+                        {
+                            "id":  6,
+                            "name":  "Maize",
+                            "category":  "Cereals",
+                            "icon":  "fa-wheat-awn"
+                        },
+                        {
+                            "id":  7,
+                            "name":  "Beans",
+                            "category":  "Pulses",
+                            "icon":  "fa-seedling"
+                        },
+                        {
+                            "id":  8,
+                            "name":  "Rice",
+                            "category":  "Cereals",
+                            "icon":  "fa-bowl-rice"
+                        },
+                        {
+                            "id":  9,
+                            "name":  "Cooking oil",
+                            "category":  "Essentials",
+                            "icon":  "fa-bottle-droplet"
+                        },
+                        {
+                            "id":  10,
+                            "name":  "Avocados",
+                            "category":  "Fruits",
+                            "icon":  "fa-apple-whole"
+                        }
+                    ],
+    "markets":  [
+                    {
+                        "id":  1,
+                        "name":  "Kibuye Market"
+                    },
+                    {
+                        "id":  2,
+                        "name":  "Kondele Market"
+                    },
+                    {
+                        "id":  3,
+                        "name":  "Nyahera Market"
+                    },
+                    {
+                        "id":  4,
+                        "name":  "Obunga Market"
+                    },
+                    {
+                        "id":  5,
+                        "name":  "Manyatta Market"
+                    }
+                ],
+    "prices":  [
+                   {
+                       "commodity":  "Tilapia",
+                       "category":  "Fish",
+                       "icon":  "fa-fish",
+                       "photo":  "img/photos/fisherman-catch.jpg",
+                       "market":  "Kibuye Market",
+                       "observed_at":  "2026-10-19",
+                       "price":  420,
+                       "currency":  "KES",
+                       "unit":  "kg",
+                       "trend":  "up"
+                   },
+                   {
+                       "commodity":  "Nile perch",
+                       "category":  "Fish",
+                       "icon":  "fa-fish",
+                       "photo":  "img/photos/fish-vendor.jpg",
+                       "market":  "Kibuye Market",
+                       "observed_at":  "2026-10-19",
+                       "price":  380,
+                       "currency":  "KES",
+                       "unit":  "kg",
+                       "trend":  "stable"
+                   },
+                   {
+                       "commodity":  "Tomatoes",
+                       "category":  "Vegetables",
+                       "icon":  "fa-pepper-hot",
+                       "photo":  "img/photos/produce-stall.jpg",
+                       "market":  "Kibuye Market",
+                       "observed_at":  "2026-10-19",
+                       "price":  85,
+                       "currency":  "KES",
+                       "unit":  "kg",
+                       "trend":  "down"
+                   },
+                   {
+                       "commodity":  "Onions",
+                       "category":  "Vegetables",
+                       "icon":  "fa-carrot",
+                       "photo":  "img/photos/roadside-market.jpg",
+                       "market":  "Kondele Market",
+                       "observed_at":  "2026-10-19",
+                       "price":  110,
+                       "currency":  "KES",
+                       "unit":  "kg",
+                       "trend":  "up"
+                   },
+                   {
+                       "commodity":  "Sukuma wiki",
+                       "category":  "Vegetables",
+                       "icon":  "fa-leaf",
+                       "photo":  "img/photos/farmer-harvest.jpg",
+                       "market":  "Obunga Market",
+                       "observed_at":  "2026-10-19",
+                       "price":  30,
+                       "currency":  "KES",
+                       "unit":  "bunch",
+                       "trend":  "stable"
+                   },
+                   {
+                       "commodity":  "Maize",
+                       "category":  "Cereals",
+                       "icon":  "fa-wheat-awn",
+                       "photo":  "img/photos/farmer-field.jpg",
+                       "market":  "Nyahera Market",
+                       "observed_at":  "2026-10-18",
+                       "price":  52,
+                       "currency":  "KES",
+                       "unit":  "kg",
+                       "trend":  "down"
+                   },
+                   {
+                       "commodity":  "Beans",
+                       "category":  "Pulses",
+                       "icon":  "fa-seedling",
+                       "photo":  "img/photos/beans-farm.jpg",
+                       "market":  "Manyatta Market",
+                       "observed_at":  "2026-10-18",
+                       "price":  160,
+                       "currency":  "KES",
+                       "unit":  "kg",
+                       "trend":  "up"
+                   },
+                   {
+                       "commodity":  "Rice",
+                       "category":  "Cereals",
+                       "icon":  "fa-bowl-rice",
+                       "photo":  "img/photos/busy-market.jpg",
+                       "market":  "Kondele Market",
+                       "observed_at":  "2026-10-18",
+                       "price":  195,
+                       "currency":  "KES",
+                       "unit":  "kg",
+                       "trend":  "stable"
+                   },
+                   {
+                       "commodity":  "Cooking oil",
+                       "category":  "Essentials",
+                       "icon":  "fa-bottle-droplet",
+                       "photo":  "img/photos/lake-market-kisumu.jpg",
+                       "market":  "Kibuye Market",
+                       "observed_at":  "2026-10-18",
+                       "price":  320,
+                       "currency":  "KES",
+                       "unit":  "litre",
+                       "trend":  "up"
+                   },
+                   {
+                       "commodity":  "Avocados",
+                       "category":  "Fruits",
+                       "icon":  "fa-apple-whole",
+                       "photo":  "img/photos/trader-phone.jpg",
+                       "market":  "Obunga Market",
+                       "observed_at":  "2026-10-17",
+                       "price":  45,
+                       "currency":  "KES",
+                       "unit":  "piece",
+                       "trend":  "down"
+                   },
+                   {
+                       "commodity":  "Tilapia",
+                       "category":  "Fish",
+                       "icon":  "fa-fish",
+                       "photo":  "img/photos/fisherman-catch.jpg",
+                       "market":  "Manyatta Market",
+                       "observed_at":  "2026-10-17",
+                       "price":  400,
+                       "currency":  "KES",
+                       "unit":  "kg",
+                       "trend":  "stable"
+                   },
+                   {
+                       "commodity":  "Tomatoes",
+                       "category":  "Vegetables",
+                       "icon":  "fa-pepper-hot",
+                       "photo":  "img/photos/produce-stall.jpg",
+                       "market":  "Nyahera Market",
+                       "observed_at":  "2026-10-17",
+                       "price":  90,
+                       "currency":  "KES",
+                       "unit":  "kg",
+                       "trend":  "up"
+                   }
+               ]
 }
