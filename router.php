@@ -58,6 +58,13 @@ if ($uri === '/' || is_dir(__DIR__ . $uri)) {
     }
 }
 
-// Extensionless admin/public pages route through app.php, like Apache.
+// Extensionless admin/public pages route through app.php, like Apache's
+// `RewriteRule ^(.+)$ app.php?view=$1`. The built-in server never rewrites
+// the query string, so derive `view` from the path here — without it every
+// admin URL would fall back to the default dashboard view.
+$segment = ltrim(rawurldecode($uri), '/');
+if (!array_key_exists('view', $_GET) && $segment !== '') {
+    $_GET['view'] = $segment;
+}
 require __DIR__ . '/app.php';
 return true;
