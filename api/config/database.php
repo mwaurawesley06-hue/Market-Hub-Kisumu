@@ -22,11 +22,20 @@ function db(): PDO
         $options[PDO::MYSQL_ATTR_READ_TIMEOUT] = 15;
     }
     if (DB_SSL) {
-        // Managed MySQL (Render) terminates TLS. With a CA bundle, verify the
-        // server certificate against it; without one, still encrypt the
-        // connection but skip certificate pinning so the default endpoint works.
-        if (DB_SSL_CA !== '' && is_file(DB_SSL_CA)) {
-            $options[PDO::MYSQL_ATTR_SSL_CA] = DB_SSL_CA;
+        // Managed MySQL (TiDB Cloud, Render, etc.) requires TLS. mysqlnd only
+        // enables TLS when an SSL option is present, and TiDB uses Let's
+        // Encrypt — so point at the system CA bundle when no explicit CA is
+        // configured. Without any CA file (e.g. bare Windows dev), still set
+        // the verify flag so an SSL context exists where the driver honors it.
+        $caFile = '';
+        foreach ([DB_SSL_CA, '/etc/ssl/certs/ca-certificates.crt', '/etc/ssl/cert.pem', '/etc/pki/tls/certs/ca-bundle.crt'] as $candidate) {
+            if ($candidate !== '' && is_file($candidate)) {
+                $caFile = $candidate;
+                break;
+            }
+        }
+        if ($caFile !== '') {
+            $options[PDO::MYSQL_ATTR_SSL_CA] = $caFile;
             $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = DB_SSL_VERIFY;
         } else {
             $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
