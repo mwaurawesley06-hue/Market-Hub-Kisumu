@@ -77,7 +77,7 @@ $branding = $user ? site_branding($pdo) : null;
 <div class="app-frame">
     <aside class="sidebar" id="sidebar">
         <div class="brand-lockup">
-            <div class="brand-mark"><img src="<?= $branding['site_logo_url'] ?? 'img/logo.svg' ?>" alt="<?= $branding['site_name_html'] ?? 'MPIDS' ?> logo"></div>
+            <div class="brand-mark"><img src="<?= $branding['site_logo_url'] ?? 'img/logo.png' ?>" alt="<?= $branding['site_name_html'] ?? 'MPIDS' ?> logo"></div>
             <div>
                 <strong><?= $branding['site_name_html'] ?? 'MPIDS' ?></strong>
                 <span><?= $branding['site_tagline_html'] ?? 'Market Info Hub' ?></span>

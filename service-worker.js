@@ -21,10 +21,9 @@ const OFFLINE_FALLBACK = [
     'js/subscriptions.js',
     'js/ussd.js',
     'pwa/manifest.json',
-    'pwa/icon.svg',
-    'img/favicon.png',
+        'img/favicon.png',
     'img/market-hero.jpg',
-    'img/logo.svg'
+    'img/logo.png'
 ];
 const CACHEABLE_PAGES = ['public-dashboard.html', 'subscriptions.html', 'ussd.html'];
 // Derived from the worker's own location so the app can live in any subdirectory.

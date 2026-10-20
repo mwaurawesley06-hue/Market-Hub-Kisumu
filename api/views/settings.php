@@ -35,7 +35,7 @@
         <div class="panel-header"><div><h2>Brand logo</h2><p>A square image works best. Replaces the MPIDS mark in every header.</p></div></div>
         <div class="panel-body">
             <div class="settings-logo-row">
-                <div class="settings-logo-preview" id="logo-preview"><img src="<?= htmlspecialchars((string) ($branding['site_logo_url'] ?? 'img/logo.svg'), ENT_QUOTES, 'UTF-8') ?>" alt="Current site logo"></div>
+                <div class="settings-logo-preview" id="logo-preview"><img src="<?= htmlspecialchars((string) ($branding['site_logo_url'] ?? 'img/logo.png'), ENT_QUOTES, 'UTF-8') ?>" alt="Current site logo"></div>
                 <div class="settings-logo-actions">
                     <input type="file" id="logo-input" accept="image/jpeg,image/png,image/webp" hidden>
                     <button class="button button-secondary" type="button" id="logo-upload"><i class="fa-solid fa-upload"></i><span>Upload logo</span></button>

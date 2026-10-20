@@ -75,7 +75,7 @@ function read_site_settings(PDO $pdo): array
     // upload/remove endpoints, so it is surfaced here for every reader
     // (admin GET, public GET, and the page-shell branding helper).
     $logo = (string) ($stored['site_logo'] ?? '');
-    $settings['site_logo'] = ($logo === '') ? 'img/logo.svg' : $logo;
+    $settings['site_logo'] = ($logo === '') ? 'img/logo.png' : $logo;
     $settings['site_logo_url'] = site_asset_url($settings['site_logo']);
     return $settings;
 }

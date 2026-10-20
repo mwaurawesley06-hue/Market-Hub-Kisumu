@@ -24,7 +24,7 @@ function public_branding(): array
         $branding = [
             'site_name_html' => 'MPIDS',
             'site_tagline_html' => 'Market Info Hub, Kisumu',
-            'site_logo_url' => 'img/logo.svg',
+            'site_logo_url' => 'img/logo.png',
             'hero_image' => 'img/market-hero.jpg',
             'theme_css' => '',
         ];
