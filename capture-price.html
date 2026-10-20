@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Capture Price · MPIDS</title>
+    <title>Capture price &mdash; MPIDS</title>
+    <meta http-equiv="refresh" content="0;url=https://mpids-api.onrender.com/capture">
     <link rel="icon" href="img/favicon.png">
     <link rel="manifest" href="pwa/manifest.json">
     <meta name="theme-color" content="#0b2b1b">
@@ -14,11 +15,17 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <script>window.location.replace('https://mpids-api.onrender.com/capture');</script>
 </head>
-<body>
-    <script src="js/config.js"></script><script src="js/api.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/capture-price.js"></script>
+<body class="admin-shell">
+    <main class="page-content" id="main-content">
+        <section class="empty-state">
+            <i class="fa-solid fa-plus-circle"></i>
+            <h1>Capture price</h1>
+            <p>This screen runs on the PHP backend against the live MySQL database. Taking you to the real Capture price screen now&hellip;</p>
+            <p><a class="button button-primary" href="https://mpids-api.onrender.com/capture"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Continue on the backend</span></a></p>
+            <p><a href="public-dashboard.html">Back to public prices</a></p>
+        </section>
+    </main>
 </body>
 </html>

@@ -1,34 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sign in Â· MPIDS</title>
+    <title>Admin sign in &mdash; MPIDS</title>
+    <meta http-equiv="refresh" content="0;url=https://mpids-api.onrender.com/login">
+    <link rel="icon" href="img/favicon.png">
+    <link rel="manifest" href="pwa/manifest.json">
+    <meta name="theme-color" content="#0b2b1b">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="icon" href="img/favicon.png">
-    <link rel="stylesheet" href="css/layout.css?v=9">
-    <link rel="stylesheet" href="css/style.css?v=9">
-    <link rel="stylesheet" href="css/responsive.css?v=9">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script>window.location.replace('https://mpids-api.onrender.com/login');</script>
 </head>
-<body class="login-body">
-<main class="login-page">
-    <div class="login-brand"><div class="brand-mark"><img src="img/logo.png" alt="MPIDS logo" data-brand-logo></div><div><strong data-brand-name>MPIDS</strong><span data-brand-tagline>Market Info Hub, Kisumu</span></div></div>
-    <section class="login-card market-accent-login">
-        <div class="login-photo" aria-hidden="true" data-brand-hero data-hero-fallback="img/market-hero.jpg"></div>
-        <div class="login-form-side">
-            <div class="eyebrow">Secure workspace</div><h1>Welcome back</h1><p>Sign in to capture, review, and publish market prices.</p><form id="login-form" novalidate><div class="form-field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="admin@mpids.local" required><span class="field-error" data-error-for="email"></span></div><div class="form-field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required><span class="field-error" data-error-for="password"></span></div><button class="button button-primary" type="submit" id="login-submit"><i class="fa-solid fa-arrow-right-to-bracket"></i><span>Sign in</span></button></form><p class="form-hint">Static demo build: any email and password opens the demo admin shell. Live accounts, approvals and SMS need the PHP/MySQL backend.</p>
-        </div>
-    </section>
-    <p class="login-footer"><a href="public-dashboard.html">Browse public prices</a> Â· No account required</p>
-</main>
-<div class="toast-region" id="toast-region" aria-live="polite"></div>
-<script src="js/config.js"></script><script src="js/api.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/public-ui.js"></script>
-<script src="js/public-branding.js"></script>
-<script src="js/login.js"></script>
+<body class="admin-shell">
+    <main class="page-content" id="main-content">
+        <section class="empty-state">
+            <i class="fa-solid fa-lock"></i>
+            <h1>Admin sign in</h1>
+            <p>Authentication runs on the secure MPIDS backend (PHP sessions against MySQL). Taking you to the sign-in page now&hellip;</p>
+            <p><a class="button button-primary" href="https://mpids-api.onrender.com/login"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Continue on the backend</span></a></p>
+            <p><a href="public-dashboard.html">Back to public prices</a></p>
+        </section>
+    </main>
 </body>
 </html>

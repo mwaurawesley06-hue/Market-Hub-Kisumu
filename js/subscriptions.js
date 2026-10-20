@@ -1,4 +1,6 @@
-/* SMS subscription page — demo verification flow backed by localStorage. */
+/* SMS subscription page — subscribe, verify and unsubscribe against the live
+ * PHP/MySQL backend (window.MPIDSApi). No browser-local subscription store:
+ * every step talks to /api/subscriptions/. */
 (function () {
     'use strict';
 

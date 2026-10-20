@@ -1,187 +1,148 @@
-/* USSD simulator — runs the menu session locally in the browser. */
+/* USSD simulator — every step posts to the live backend's /api/ussd endpoint,
+ * which keeps the conversation in the ussd_sessions table. This is the same
+ * gateway protocol a handset would speak; only the phone is simulated here.
+ *
+ * API base comes from js/config.js (window.MPIDS_CONFIG.apiBase). */
 (function () {
     'use strict';
 
-    var ui = window.MPIDSUI;
-    var api = window.MPIDSApi;
+    const apiBase = String((window.MPIDS_CONFIG && window.MPIDS_CONFIG.apiBase) || '')
+        .trim()
+        .replace(/\/+$/, '');
 
-    var form = document.getElementById('ussd-form');
-    var output = document.getElementById('ussd-output');
-    var status = document.getElementById('ussd-status');
-    var resetButton = document.getElementById('ussd-reset');
+    // The gateway has no memory between prompts, so the simulator keeps the
+    // sessionId the server handed out and replays it on every step.
+    let sessionId = window.sessionStorage.getItem('mpids_ussd_session') || '';
 
-    var commodities = [];
-    var session = null;
-
-    function print(text) {
-        if (output) output.textContent = text;
+    function newSessionId() {
+        const random = (window.crypto && window.crypto.randomUUID)
+            ? window.crypto.randomUUID()
+            : Math.random().toString(36).slice(2) + Date.now().toString(36);
+        return `sim-${random}`;
     }
 
-    function setStatus(text, tone) {
-        if (!status) return;
-        status.textContent = text;
-        status.setAttribute('data-tone', tone || 'open');
+    function storeSession(value) {
+        sessionId = value;
+        window.sessionStorage.setItem('mpids_ussd_session', value);
     }
 
-    function mainMenu() {
-        session = { step: 'main', phone: session ? session.phone : '' };
-        print(
-            'MPIDS Market Info Hub\n' +
-            'Kisumu · latest approved prices\n\n' +
-            '1. Check latest prices\n' +
-            '2. Subscribe to SMS alerts\n' +
-            '0. Exit\n\n' +
-            'Reply with an option.'
-        );
-        setStatus('Main menu', 'open');
+    function setBusy(button, busy, busyLabel) {
+        if (!button) return;
+        if (busy) {
+            button.dataset.label = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>' + (busyLabel || 'Sending') + '</span>';
+        } else {
+            button.disabled = false;
+            if (button.dataset.label) button.innerHTML = button.dataset.label;
+        }
     }
 
-    function showPrices() {
-        api.getPublicPrices().then(function (result) {
-            var lines = result.rows.slice(0, 6).map(function (row, index) {
-                return (index + 1) + '. ' + row.commodity + ' — ' +
-                    ui.formatMoney(row.currency, row.price) + '/' + row.unit +
-                    ' (' + row.market + ')';
-            });
-            print('Latest published prices\n\n' + lines.join('\n') + '\n\n0. Main menu');
-            setStatus('Price list', 'open');
-            session = { step: 'price-back', phone: session ? session.phone : '' };
-        }).catch(function () {
-            print('Prices are unavailable right now.\n\n0. Main menu');
-            session = { step: 'price-back', phone: session ? session.phone : '' };
-        });
-    }
-
-    function askPhone() {
-        session = { step: 'phone', phone: session ? session.phone : '' };
-        print('SMS subscription\n\nEnter the phone number to verify\n(e.g. 0712345678):\n\n* Back');
-        setStatus('Awaiting phone', 'open');
-    }
-
-    function listCommodities(prefix) {
-        var lines = commodities.map(function (item, index) {
-            return (index + 1) + '. ' + item.name;
-        });
-        print(prefix + '\n\n' + lines.join('\n') + '\n\n* Back  # Cancel');
-        setStatus('Awaiting commodity', 'open');
-    }
-
-    function askFrequency() {
-        print('SMS subscription\n\n' + session.phone + ' following ' + session.commodity + '\n\n' +
-            '1. Daily alerts\n2. Weekly alerts\n\n* Back  # Cancel');
-        setStatus('Awaiting frequency', 'open');
-    }
-
-    function confirmAndCreate() {
-        api.createSubscription({
-            phone_number: session.phone,
-            commodity: session.commodityId || session.commodity,
-            commodity_name: session.commodity,
-            frequency: session.frequency
-        }).then(function (result) {
-            var codeLine = result.sandbox_otp
-                ? 'Verification code: ' + result.sandbox_otp + '\n'
-                : (result.detail ? result.detail + '\n' : '');
-            print(
-                'Subscription created\n\n' +
-                'ID: ' + result.subscription_id + '\n' +
-                'Commodity: ' + session.commodity + '\n' +
-                'Frequency: ' + session.frequency + '\n\n' +
-                codeLine + '\n' +
-                'Confirm the code on the SMS alerts page.\n0. Main menu'
-            );
-            setStatus('Subscription created', 'done');
-            session = { step: 'done', phone: result.phone_number };
-        }).catch(function (error) {
-            print((error.message || 'Could not create the subscription.') + '\n\n0. Main menu');
-            setStatus('Error', 'error');
-            session = { step: 'done', phone: session.phone };
-        });
-    }
-
-    function handleInput(raw) {
-        var text = String(raw || '').trim();
-        var step = session ? session.step : 'main';
-
-        if (text === '#') {
-            print('Session cancelled.\nDial again to restart.');
-            setStatus('Cancelled', 'error');
-            session = null;
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('ussd-form');
+        const phoneInput = document.getElementById('ussd-phone');
+        const textInput = document.getElementById('ussd-text');
+        const submit = document.getElementById('ussd-submit');
+        const output = document.getElementById('ussd-output');
+        const status = document.getElementById('ussd-status');
+        const reset = document.getElementById('ussd-reset');
+        if (!form || !submit || !output) {
             return;
         }
-        if (text === '*') {
-            if (step === 'main') { print('Goodbye.'); setStatus('End', 'done'); session = null; return; }
-            mainMenu();
+        if (!apiBase) {
+            output.textContent = 'The MPIDS API base URL is not configured (js/config.js).';
+            setStatus('Not configured', 'error');
             return;
-        }
-        if (text === '0') {
-            if (step === 'price-back' || step === 'done' || step === 'main') { mainMenu(); return; }
         }
 
-        if (step === 'main') {
-            if (text === '1') { showPrices(); return; }
-            if (text === '2') { askPhone(); return; }
-            print('Unknown option.\n\n1. Check latest prices\n2. Subscribe to SMS alerts\n0. Exit');
-            return;
+        if (!sessionId) {
+            storeSession(newSessionId());
         }
-        if (step === 'price-back') { mainMenu(); return; }
-        if (step === 'phone') {
-            if (!/^(\+?254|0)[17]\d{8}$/.test(text.replace(/[\s-]/g, ''))) {
-                print('That number looks invalid.\n\nEnter the phone number to verify\n(e.g. 0712345678):\n\n* Back');
-                return;
+
+        function setStatus(label, tone) {
+            if (!status) return;
+            status.textContent = label;
+            status.dataset.tone = tone;
+        }
+
+        function render(response) {
+            const isEnd = response.startsWith('END');
+            output.textContent = response;
+            setStatus(isEnd ? 'Session ended' : 'Session open', isEnd ? 'ended' : 'open');
+            if (isEnd) {
+                // END closes the handset's session: the next reply has to dial
+                // the code again, so the server must not keep the old state.
+                storeSession(newSessionId());
             }
-            session.phone = text;
-            session.step = 'commodity';
-            listCommodities('Choose a commodity for ' + text);
-            return;
-        }
-        if (step === 'commodity') {
-            var index = parseInt(text, 10) - 1;
-            if (isNaN(index) || index < 0 || index >= commodities.length) {
-                listCommodities('Unknown option. Choose a commodity:');
-                return;
+            // CON keeps it open and the input is cleared so the next keypress
+            // answers the screen that is currently on the phone.
+            if (!isEnd) {
+                textInput.value = '';
             }
-            session.commodity = commodities[index].name;
-            session.commodityId = commodities[index].id;
-            session.step = 'frequency';
-            askFrequency();
-            return;
+            output.scrollTop = output.scrollHeight;
         }
-        if (step === 'frequency') {
-            if (text === '1') session.frequency = 'daily';
-            else if (text === '2') session.frequency = 'weekly';
-            else { askFrequency(); return; }
-            confirmAndCreate();
-            return;
-        }
-        mainMenu();
-    }
 
-    if (form) {
+        function showError(message) {
+            output.textContent = message;
+            setStatus('Request failed', 'error');
+            window.MPIDSUI.toast(message, 'error');
+        }
+
+        async function send(text) {
+            window.MPIDSUI.clearFieldErrors(form);
+            setBusy(submit, true, 'Sending');
+            setStatus('Sending…', 'busy');
+            try {
+                const response = await fetch(`${apiBase}/ussd`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Accept: 'text/plain' },
+                    body: JSON.stringify({
+                        sessionId: sessionId,
+                        phoneNumber: phoneInput ? phoneInput.value.trim() : '',
+                        text: text
+                    })
+                });
+                const body = await response.text();
+                if (!response.ok) {
+                    // A gateway that refuses the call still answers in USSD
+                    // shape, so anything else is a transport problem.
+                    showError(body.startsWith('CON') || body.startsWith('END')
+                        ? body
+                        : `The gateway answered ${response.status}. Please try again shortly.`);
+                    return;
+                }
+                render(body);
+            } catch (error) {
+                showError('Unable to reach the USSD endpoint. Check your connection and try again.');
+            } finally {
+                setBusy(submit, false);
+            }
+        }
+
         form.addEventListener('submit', function (event) {
             event.preventDefault();
-            var phoneField = form.phone_number;
-            var textField = form.text;
-            if (!session && phoneField.value.trim()) {
-                session = { step: 'main', phone: phoneField.value.trim() };
+            send(textInput.value.trim());
+        });
+
+        if (reset) {
+            reset.addEventListener('click', function (event) {
+                event.preventDefault();
+                storeSession(newSessionId());
+                textInput.value = '';
+                window.MPIDSUI.clearFieldErrors(form);
+                send('');
+            });
+        }
+
+        textInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                send(textInput.value.trim());
             }
-            handleInput(textField.value);
-            textField.value = '';
         });
-    }
 
-    if (resetButton) {
-        resetButton.addEventListener('click', function () {
-            session = null;
-            mainMenu();
-        });
-    }
-
-    api.getCommodities().then(function (items) {
-        commodities = items;
-        mainMenu();
-    }).catch(function () {
-        print('Could not load commodities. Reload the page to try again.');
-        setStatus('Unavailable', 'error');
+        // Dial the code once so the phone shows a live menu rather than the
+        // placeholder text.
+        send('');
     });
 })();

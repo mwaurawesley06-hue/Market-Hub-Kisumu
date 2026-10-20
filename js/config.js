@@ -1,13 +1,12 @@
 /* MPIDS static-build configuration.
  *
- * Set apiBase to your Render (or other) PHP API root INCLUDING /api, e.g.
+ * apiBase must point at the PHP API root INCLUDING /api, e.g.:
  *   window.MPIDS_CONFIG = { apiBase: 'https://mpids-api.onrender.com/api' };
  *
- * While apiBase is empty the site runs in demo mode: prices come from
- * data/prices.json and subscriptions are stored in this browser only.
- * With apiBase set, prices, commodities, markets and SMS registrations
- * go to the live database; the static dataset is only used as an offline
- * fallback if the API cannot be reached. */
+ * The static site is the public frontend only: prices, commodities, markets
+ * and SMS registrations are read from and written to the live MySQL database
+ * behind that API. If the API is unreachable the pages show an error state —
+ * there is no offline demo dataset. */
 window.MPIDS_CONFIG = {
     apiBase: 'https://mpids-api.onrender.com/api'
 };

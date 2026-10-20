@@ -1,7 +1,7 @@
-﻿/* MPIDS service worker â€” offline support for the PUBLIC site only.
+/* MPIDS service worker â€” offline support for the PUBLIC site only.
  * Must live at the site root so its scope covers every page.
  * Admin pages, the login screen and authenticated API traffic are never cached. */
-const CACHE_NAME = 'mpids-v9';
+const CACHE_NAME = 'mpids-v10';
 // This worker is served from the app root, so its natural scope is the app
 // directory. Requests outside that prefix belong to other apps that may share
 // this origin (XAMPP), so they are never intercepted.
@@ -14,8 +14,8 @@ const OFFLINE_FALLBACK = [
     'css/style.css',
     'css/layout.css',
     'css/responsive.css',
+    'js/config.js',
     'js/api.js',
-    'js/app.js',
     'js/public-ui.js',
     'js/public-dashboard.js',
     'js/subscriptions.js',

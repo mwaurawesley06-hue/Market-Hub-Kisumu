@@ -8,27 +8,18 @@
     <link rel="icon" href="img/favicon.png">
     <link rel="manifest" href="pwa/manifest.json">
     <meta name="theme-color" content="#0b2b1b">
+    <meta http-equiv="refresh" content="0;url=public-dashboard.html">
 </head>
 <body>
     <p>Taking you to the <a href="public-dashboard.html">public price dashboard</a>.
-       Super Admins can continue to the <a href="login.html">login page</a>.</p>
+       Super Admins can sign in on the <a href="https://mpids-api.onrender.com/login">backend</a>.</p>
     <noscript>
         <p><a href="public-dashboard.html">Continue to the public price dashboard</a> or
-           <a href="login.html">log in to the admin area</a>.</p>
+           <a href="https://mpids-api.onrender.com/login">sign in to the admin area</a>.</p>
     </noscript>
     <script>
-        // Signed-in admins land on the dashboard; everyone else on the public dashboard.
-        (function () {
-            if (localStorage.getItem('mpids_user')) {
-                fetch(window.location.pathname.replace(/[^/]*$/, '') + 'api/stats/', { credentials: 'include' })
-                    .then(function (res) {
-                        window.location.href = res.ok ? 'dashboard.html' : 'public-dashboard.html';
-                    })
-                    .catch(function () { window.location.href = 'public-dashboard.html'; });
-            } else {
-                window.location.href = 'public-dashboard.html';
-            }
-        })();
+        // Everyone lands on the public dashboard; admins sign in on the backend.
+        window.location.replace('public-dashboard.html');
     </script>
 </body>
 </html>

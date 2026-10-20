@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -19,7 +19,7 @@
 <main class="public-main">
 <section class="page-heading market-accent market-accent-banner"><div><div class="eyebrow">Feature phones first</div><h1>USSD simulator</h1><p>Dial the hub's service code and any market participant can check a price or subscribe to SMS alerts without internet or a smartphone.</p></div></section>
 <section class="panel ussd-simulator">
-    <div class="panel-header"><div><h2>Try the USSD session</h2><p>Interactive copy of the hub's USSD menu. On this static demo the session runs entirely in your browser.</p></div><span class="badge badge-soft-info"><i class="fa-solid fa-phone"></i>Live simulation</span></div>
+    <div class="panel-header"><div><h2>Try the USSD session</h2><p>Interactive copy of the hub's USSD menu. Every step is handled by the live backend, which stores the session server-side.</p></div><span class="badge badge-soft-info"><i class="fa-solid fa-phone"></i>Live backend session</span></div>
     <div class="panel-body">
         <form id="ussd-form" novalidate>
             <div class="form-grid">
@@ -53,7 +53,7 @@
             <li class="step"><div><strong>Option 2</strong><p>Asks for a phone number, then a commodity, then daily or weekly, then confirms.</p></div></li>
             <li class="step"><div><strong>Confirm</strong><p>Inserts the subscription and texts a 6-digit verification code. Confirm it on the <a href="subscriptions.html">SMS alerts page</a> to switch alerts on.</p></div></li>
         </ol>
-        <p class="form-hint">No real SMS is sent while the gateway is unconfigured â€” messages are simulated and logged to <code>tmp/logs/sms-sim.log</code>.</p>
+        <p class="form-hint">No real SMS is sent while the gateway is unconfigured â€” messages are simulated and logged on the server.</p>
     </div>
 </section>
 </main>
