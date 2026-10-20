@@ -106,7 +106,7 @@
                 logoPreview.innerHTML = `<img src="${window.mpidsUi.escape(preview)}" alt="Current site logo">`;
                 // Only offer removal while a custom logo is actually configured.
                 // Compare the raw path: the cache-busted URL never equals the default.
-                logoRemoveButton.hidden = data.site_logo === 'img/logo.svg';
+                logoRemoveButton.hidden = data.site_logo === 'img/logo.png';
             }
         } catch (error) {
             window.mpidsUi.toast(error.data?.detail || 'Unable to load settings.', 'error');
@@ -191,7 +191,7 @@
         window.mpidsUi.setBusy(logoRemoveButton, true, 'Removing');
         try {
             await window.api.del('settings/logo');
-            logoPreview.innerHTML = '<img src="img/logo.svg" alt="Current site logo">';
+            logoPreview.innerHTML = '<img src="img/logo.png" alt="Current site logo">';
             logoRemoveButton.hidden = true;
             window.mpidsUi.toast('Custom logo removed.', 'success');
         } catch (error) {

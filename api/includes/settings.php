@@ -33,7 +33,7 @@ function site_branding(PDO $pdo): array
     } else {
         try {
             require_once __DIR__ . '/../handlers/site-settings.php';
-            // read_site_settings() always includes site_logo (img/logo.svg default).
+            // read_site_settings() always includes site_logo (img/logo.png default).
             $branding = read_site_settings($pdo);
         } catch (Throwable) {
             $branding = [
@@ -42,7 +42,7 @@ function site_branding(PDO $pdo): array
                 'theme_primary' => '#0b6e4f',
                 'theme_secondary' => '#f2b445',
                 'hero_image' => 'img/market-hero.jpg',
-                'site_logo' => 'img/logo.svg',
+                'site_logo' => 'img/logo.png',
             ];
         }
         // Deliberately outside the try above: a failed cache write must never
@@ -60,10 +60,10 @@ function site_branding(PDO $pdo): array
     // masked by the browser's cached copy. Same helper the API response uses.
     $logoUrl = (string) ($branding['site_logo_url'] ?? '');
     if ($logoUrl === '' && function_exists('site_asset_url')) {
-        $logoUrl = site_asset_url((string) ($branding['site_logo'] ?? 'img/logo.svg'));
+        $logoUrl = site_asset_url((string) ($branding['site_logo'] ?? 'img/logo.png'));
     }
     if ($logoUrl === '') {
-        $logoUrl = (string) ($branding['site_logo'] ?? 'img/logo.svg');
+        $logoUrl = (string) ($branding['site_logo'] ?? 'img/logo.png');
     }
     $branding['site_logo_url'] = htmlspecialchars($logoUrl, ENT_QUOTES, 'UTF-8');
     $branding['theme_css'] = sprintf(
