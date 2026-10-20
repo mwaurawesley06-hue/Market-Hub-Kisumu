@@ -7,6 +7,17 @@ require_once __DIR__ . '/api/includes/settings.php';
 
 
 $view = strtolower(clean_string($_GET['view'] ?? 'dashboard', 40));
+
+// Views that ship as standalone public .html files (they call public API
+// endpoints only, so no auth gate or server-rendered shell applies). Served
+// here so direct app.php?view=... hits behave like the rewritten URLs.
+$standalonePages = ['ussd', 'subscriptions', 'public-dashboard', 'subscribe'];
+if (in_array($view, $standalonePages, true) && is_file(__DIR__ . '/' . $view . '.html')) {
+    header('Content-Type: text/html; charset=utf-8');
+    readfile(__DIR__ . '/' . $view . '.html');
+    exit;
+}
+
 $views = [
     'dashboard' => 'Dashboard',
     'capture' => 'Capture price',

@@ -1,8 +1,0 @@
-[
-  { "id": 1, "name": "Maize flour (2 kg)", "category": "cereal", "unit_of_measure": "2 kg", "image_path": "maize-flour.jpg" },
-  { "id": 2, "name": "Irish potatoes (10 kg)", "category": "vegetable", "unit_of_measure": "10 kg", "image_path": "potatoes.jpg" },
-  { "id": 3, "name": "Fresh milk (500 ml)", "category": "livestock", "unit_of_measure": "500 ml", "image_path": "milk.jpg" },
-  { "id": 4, "name": "Amaranth leaves ( bunch)", "category": "vegetable", "unit_of_measure": "bunch", "image_path": "amaranth.jpg" },
-  { "id": 5, "name": "Beans (1 kg)", "category": "legume", "unit_of_measure": "kg", "image_path": "beans.jpg" },
-  { "id": 6, "name": "Chicken (whole)", "category": "livestock", "unit_of_measure": "piece", "image_path": "chicken.jpg" }
-]

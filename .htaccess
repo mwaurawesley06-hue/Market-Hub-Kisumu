@@ -5,6 +5,11 @@ RewriteEngine On
 # controller so the auth gate never redirects /login back to /login.
 RewriteRule ^login/?$ login.html [L]
 
+# Standalone public pages (linked extensionless from the admin shell nav).
+# They ship as real .html files and call public API endpoints only, so they
+# are served directly instead of falling through to app.php's view router.
+RewriteRule ^(ussd|subscriptions|public-dashboard)/?$ $1.html [L]
+
 # Front controller: extensionless admin/public pages route through app.php.
 # Skips the root (/) so DirectoryIndex can serve index.html for the home page.
 # Skips real files (CSS, JS, images, the static public .html pages) and real

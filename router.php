@@ -37,6 +37,17 @@ if (preg_match('#^/login/?$#', $uri)) {
     return true;
 }
 
+// Standalone public pages, linked extensionless from the admin shell nav
+// (same rule as Apache): serve the real .html files, never app.php.
+if (preg_match('#^/(ussd|subscriptions|public-dashboard)/?$#', $uri, $publicPage)) {
+    $publicFile = __DIR__ . '/' . $publicPage[1] . '.html';
+    if (is_file($publicFile)) {
+        header('Content-Type: text/html; charset=utf-8');
+        readfile($publicFile);
+        return true;
+    }
+}
+
 // Existing files and directories fall through to the server's static handler.
 if ($uri !== '/' && file_exists(__DIR__ . $uri) && !is_dir(__DIR__ . $uri)) {
     return false;

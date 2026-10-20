@@ -87,8 +87,9 @@ Then open `https://<your-service>.onrender.com/login` and sign in.
 
 Done on `main`: `js/config.js` sets
 `apiBase: 'https://mpids-api.onrender.com/api'`. Live prices come from the
-Render API (falling back to `data/prices.json` if the API is unreachable)
-and SMS registrations write to the TiDB database.
+Render API only — if it is unreachable the pages show an error state (there
+is no offline demo dataset), and SMS registrations write to the TiDB
+database.
 
 ## Troubleshooting
 
