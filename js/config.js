@@ -9,5 +9,5 @@
  * go to the live database; the static dataset is only used as an offline
  * fallback if the API cannot be reached. */
 window.MPIDS_CONFIG = {
-    apiBase: ''
+    apiBase: 'https://mpids-api.onrender.com/api'
 };
